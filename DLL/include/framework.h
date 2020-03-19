@@ -1,4 +1,9 @@
-#pragma once
+﻿#pragma once
+
+#define DLL_API __declspec(dllexport) 
+#define WIN32_LEAN_AND_MEAN             // 从 Windows 头文件中排除极少使用的内容
+// Windows 头文件
+#include <windows.h>
 #include <iostream>
 #include <vector>
 #include <map>
@@ -19,7 +24,7 @@ public:
 	int x2_x1 = 0; //x2 - x1
 	int y2_y1 = 0; //y2 - y1
 	double k = 0;
-	bool ulimited = false; //��б��;
+	bool ulimited = false; //无斜率;
 
 	void store_coor(string str);
 };
@@ -57,19 +62,32 @@ public:
 	}
 };
 
-extern map<string, int> intersection; //���н���
-extern vector < line > coor_4_line; //ÿ���ߵ�����
+extern map<string, int> intersection; //所有交点
+extern vector < line > coor_4_line; //每条线的坐标
 extern vector < vector<double> > new_inter;
 extern set<Point> points;
 extern int p_cnt, N;
 
-void cnt_coor_num(); //���㽻�����
+
 void calcu_coor(int i, int j);
 void test();
 void duplicate_remove(double x, double y);
 int get_random();
 int JudgeType(int i, int j, double x, double y);
-int JudgeRadial(int i, double x,double y);
+int JudgeRadial(int i, double x, double y);
 int JudgeSegment(int i, double x, double y);
 void Dealwith(line l1, line l2);
 void DealwithKexist(line l1, line l2);
+
+DLL_API void clear();
+DLL_API void cnt_coor_num(); //计算交点个数
+DLL_API set<Point> getPoints();//返回交点
+DLL_API vector<line> getLine();//返回直线集合
+DLL_API void readin(string FileName);//读入数据
+DLL_API void addLine(line l);//添加直线
+DLL_API void delLine(line l);//删除直线
+DLL_API void solve();//求解
+DLL_API int getP_cnt();//获得交点个数
+DLL_API int getInterNum();//intersection size
+DLL_API int getPointNum();//points size
+DLL_API void write(string FileName);

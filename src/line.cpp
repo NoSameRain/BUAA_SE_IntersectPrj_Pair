@@ -3,6 +3,8 @@ using namespace std;
 
 vector < line > coor_4_line; //每条线的坐标
 map<string, int> intersection; //所有交点
+set<Point> points;
+
 int N;
 int p_cnt = 0;
 
@@ -56,7 +58,7 @@ void cnt_coor_num()
 				}
 				else //都有且相等（针对S R)
 				{
-					Dealwith(coor_4_line[i], coor_4_line[j]);
+					DealwithKexist(coor_4_line[i], coor_4_line[j]);
 				}
 			}
 		}
@@ -88,10 +90,20 @@ void calcu_coor(int i, int j)
 	else xa = -coor_4_line[m].x2_x1 * (y - coor_4_line[m].y2) / xb;
 	x = coor_4_line[m].x2 + xa;
 
+	if (fabs(x) == 0) {
+		x = 0;
+	}
+	if (fabs(y) == 0) {
+		y = 0;
+	}
 	if (JudgeType(i, j, x, y))
 	{
 		string coor = to_string(x) + to_string(y); //shit
 		intersection.insert(pair<string, int>(coor, 0));
+		Point px;
+		px.Xpoint = x;
+		px.Ypoint = y;
+		points.insert(px);
 	}
 }
 
@@ -211,6 +223,62 @@ void Dealwith(line l1, line l2) {
 	if (flag == 1) {
 		string coor = to_string(x) + to_string(y); //shit
 		intersection.insert(pair<string, int>(coor, 0));
+		Point px;
+		px.Xpoint = x;
+		px.Ypoint = y;
+		points.insert(px);
+	}
+}
+
+void DealwithKexist(line l1,line l2) {
+	int flag = 0;
+	double x, y;
+	if (l1.type == "S" && l2.type == "S") {
+		//(x1,y1) == (x1,y1)|(x2,y2)
+		if ((l1.x1 == l2.x1 && l1.y1 == l2.y1)||(l1.x1==l2.x2&&l1.y1==l2.y2)) {
+			x = 1.0 * l1.x1;
+			y = 1.0 * l1.y1;
+			flag = 1;
+		}//(x2,y2) == (x1,y1)|(x2,y2)
+		else if ((l1.x2 == l2.x1 && l1.y2 == l2.y1) || (l1.x2 == l2.x2 && l1.y2 == l2.y2)) {
+			x = l1.x2 * 1.0;
+			y = l1.y2 * 1.0;
+			flag = 1;
+		}
+	}
+	else if (l1.type == "S" && l2.type == "R") {
+		if (l1.x1 == l2.x1 && l1.y1 == l2.y1) {
+			x = 1.0 * l1.x1;
+			y = 1.0 * l1.y1;
+			flag = 1;
+		}
+		else if (l1.x2 == l2.x1 && l1.y2 == l2.y1) {
+			x = l1.x2 * 1.0;
+			y = l1.y2 * 1.0;
+			flag = 1;
+		}
+	}
+	else if (l1.type == "R" && l2.type == "S") {
+		if ((l1.x1 == l2.x1 && l1.y1 == l2.y1) || (l1.x1 == l2.x2 && l1.y1 == l2.y2)) {
+			x = 1.0 * l1.x1;
+			y = 1.0 * l1.y1;
+			flag = 1;
+		}
+	}
+	else if (l1.type == "R" && l2.type == "R") {
+		if (l1.x1 == l2.x1 && l1.y1 == l2.y1) {
+			x = 1.0 * l1.x1;
+			y = 1.0 * l1.y1;
+			flag = 1;
+		}
+	}
+	if (flag == 1) {
+		string coor = to_string(x) + to_string(y); //shit
+		intersection.insert(pair<string, int>(coor, 0));
+		Point px;
+		px.Xpoint = x;
+		px.Ypoint = y;
+		points.insert(px);
 	}
 }
 
@@ -239,7 +307,7 @@ int main(int argc, char** argv)
 	{
 		string str;
 		line coor;
-		getline(cin, str);
+		getline(fin, str);
 		coor.store_coor(str);
 		coor_4_line.push_back(coor);
 		i++;
@@ -251,5 +319,13 @@ int main(int argc, char** argv)
 	}
 	cout << p_cnt << endl;
 	out << p_cnt << endl;
-	return 0;
+	cout << points.size() << endl;
+
+	//for (map<string, int>::iterator iter = intersection.begin(); iter != intersection.end(); iter++)
+	//	cout << iter->first << iter->second << endl;
+
+	//double x = 0.0000000000000;
+	//cout << x << endl;
+	//cout << fabs(x) << endl;
+	//cout << (fabs(x)==0) << endl;
 }
