@@ -101,8 +101,8 @@ void calcu_coor(int i, int j)
 	}
 	if (JudgeType(i, j, x, y))
 	{
-		string coor = to_string(x) + to_string(y); //shit
-		intersection.insert(pair<string, int>(coor, 0));
+		//string coor = to_string(x) + to_string(y); //shit
+		//intersection.insert(pair<string, int>(coor, 0));
 		Point px;
 		px.Xpoint = x;
 		px.Ypoint = y;
@@ -224,8 +224,8 @@ void Dealwith(line l1, line l2) {
 		}
 	}
 	if (flag == 1) {
-		string coor = to_string(x) + to_string(y); //shit
-		intersection.insert(pair<string, int>(coor, 0));
+		//string coor = to_string(x) + to_string(y); //shit
+		//intersection.insert(pair<string, int>(coor, 0));
 		Point px;
 		px.Xpoint = x;
 		px.Ypoint = y;
@@ -320,7 +320,7 @@ int main(int argc, char** argv)
 	if (N > 1)
 	{
 		cnt_coor_num();
-		p_cnt = intersection.size();
+		p_cnt = points.size();
 	}
 	cout << p_cnt << endl;
 	out << p_cnt << endl;

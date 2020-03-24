@@ -92,6 +92,7 @@ extern vector<WFLine> wflines;
 extern int p_cnt, N;
 extern int linenum;
 
+
 void cnt_coor_num(); //计算交点个数
 void calcu_coor(int i, int j);
 void test();

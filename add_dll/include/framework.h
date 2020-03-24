@@ -13,7 +13,6 @@
 #include <set>
 #include "stdlib.h"
 using namespace std;
-
 class line
 {
 public:
@@ -66,7 +65,7 @@ public:
 
 class WFLine :public Point {
 public:
-	char type='L';
+	char type = 'L';
 	double a = 0;
 	double b = 0;
 	double c = 0;
@@ -91,7 +90,7 @@ public:
 
 };
 extern map<string, int> intersection; //所有交点
-extern vector <line> coor_4_line; //每条线的坐标
+extern vector < line > coor_4_line; //每条线的坐标
 extern vector < vector<double> > new_inter;
 extern set<Point> points;
 extern int p_cnt, N;
