@@ -1,6 +1,22 @@
-BUAA_SE_IntersectPrj_Pair
+### BUAA_SE_IntersectPrj_Pair
 
 BUAA软工结对项目
+
+3.24 使用说明
+
+**UI**文件夹下包含了
+
+（1）bin_UI文件夹：包含UI的exe文件（点击即可使用界面）以及必要的dll文件
+
+（2）src_UI文件夹：内含用于实现UI模块的源代码和头文件
+
+**bin**包含调用core.dll的命令行程序，支持错误处理。
+
+**add_dll**包含生成dll文件的项目源代码以及头文件和dll，lib文件
+
+**src**是项目源码，main是生成命令行程序的文件；line.cpp和line.h是源项目文件
+
+**test**里是测试代码
 
 3.19 封装成dll，lib文件
 
@@ -12,15 +28,15 @@ BUAA软工结对项目
 
 framework.h和pch.h加入include文件夹
 
-Dllwork.dll和Dllwork.lib加入lib文件夹
+core.dll和core.lib加入lib文件夹
 
 3、配置工程属性如下：
 
 配置属性-> C/C++ -> 常规 ：附加包含目录：.\include
 
-配置属性->链接器 ->  常规 ：附加库目录：.\lib
+配置属性->链接器 -> 常规 ：附加库目录：.\lib
 
-配置属性->链接器->输入->附加依赖项：Dllwork.lib
+配置属性->链接器->输入->附加依赖项：core.lib
 
 4、添加源文件main.cpp
 
@@ -53,7 +69,8 @@ DLL_API void write(string FileName);
 | ---------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | **类型不符合L S R**    | Please input line type as \"L\",\"S\",\"R\" at line          | 2<br>K 1 2 4 5<br>a 0 0 1 1                                  |
 | **‘-’后未紧跟数字**    | Make sure ‘-’ is followed by number.Error at line            | 3
-<br/>L 0 0 1 1
+
+L 0 0 1 1
 R 3 2 0 5
 S 9 - 7 8                            |
 | **坐标范围超限**       | Make sure that the range of points is(-100000,100000).Error at line | 2
@@ -241,4 +258,3 @@ R 0 -5 1 -5
 R 0 -5 -1 -5
 R 0 -7 -1 -8
 S 0 -7 1 -6
-

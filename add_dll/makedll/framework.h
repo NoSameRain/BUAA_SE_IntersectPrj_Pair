@@ -65,7 +65,7 @@ public:
 
 class WFLine :public Point {
 public:
-	char type='L';
+	char type = 'L';
 	double a = 0;
 	double b = 0;
 	double c = 0;

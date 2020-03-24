@@ -57,11 +57,41 @@ public:
 	}
 };
 
+class WFLine :public Point {
+public:
+	char type;
+	double a = 0;
+	double b = 0;
+	double c = 0;
+	Point p1;
+	Point p2;
+public:
+	//计算a,b,c
+	WFLine getLine(Point pt1, Point pt2,char type);
+	//获得交点
+	bool operator < (const WFLine& lx) const
+	{
+		if (a != lx.a) {
+			return a < lx.a;
+		}
+		else if (b != lx.b) {
+			return b < lx.b;
+		}
+		else {
+			return c < lx.c;
+		}
+	}
+
+};
+
 extern map<string, int> intersection; //所有交点
 extern vector < line > coor_4_line; //每条线的坐标
 extern vector < vector<double> > new_inter;
 extern set<Point> points;
+extern vector<WFLine> wflines;
 extern int p_cnt, N;
+extern int linenum;
+
 
 void cnt_coor_num(); //计算交点个数
 void calcu_coor(int i, int j);
@@ -73,3 +103,8 @@ int JudgeRadial(int i, double x,double y);
 int JudgeSegment(int i, double x, double y);
 void Dealwith(line l1, line l2);
 void DealwithKexist(line l1, line l2);
+
+void inputHandler(string Filename);
+bool NisNum(string str);//处理N
+void handleNum(string str);//处理点的形式
+void InfinitePoints();

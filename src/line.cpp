@@ -5,8 +5,11 @@ vector < line > coor_4_line; //每条线的坐标
 map<string, int> intersection; //所有交点
 set<Point> points;
 
+vector<WFLine> wflines;
+
 int N;
 int p_cnt = 0;
+int linenum = 0;
 
 void line::store_coor(string str)
 {
@@ -98,8 +101,8 @@ void calcu_coor(int i, int j)
 	}
 	if (JudgeType(i, j, x, y))
 	{
-		string coor = to_string(x) + to_string(y); //shit
-		intersection.insert(pair<string, int>(coor, 0));
+		//string coor = to_string(x) + to_string(y); //shit
+		//intersection.insert(pair<string, int>(coor, 0));
 		Point px;
 		px.Xpoint = x;
 		px.Ypoint = y;
@@ -221,8 +224,8 @@ void Dealwith(line l1, line l2) {
 		}
 	}
 	if (flag == 1) {
-		string coor = to_string(x) + to_string(y); //shit
-		intersection.insert(pair<string, int>(coor, 0));
+		//string coor = to_string(x) + to_string(y); //shit
+		//intersection.insert(pair<string, int>(coor, 0));
 		Point px;
 		px.Xpoint = x;
 		px.Ypoint = y;
@@ -300,6 +303,8 @@ int main(int argc, char** argv)
 
 	//test();性能测试
 
+	inputHandler(inputFilename);
+
 	int i = 0;
 	fin >> N;
 	fin.get();//用于吃掉回车
@@ -315,7 +320,7 @@ int main(int argc, char** argv)
 	if (N > 1)
 	{
 		cnt_coor_num();
-		p_cnt = intersection.size();
+		p_cnt = points.size();
 	}
 	cout << p_cnt << endl;
 	out << p_cnt << endl;
@@ -328,4 +333,386 @@ int main(int argc, char** argv)
 	//cout << x << endl;
 	//cout << fabs(x) << endl;
 	//cout << (fabs(x)==0) << endl;
+}
+
+void inputHandler(string Filename) {
+	int Nnum = 0;
+	ifstream inputh;
+	inputh.open(Filename);
+	if (!inputh.is_open()) {
+		//文件不存在
+		cout << "File is Not Found." << endl;
+		exit(0);
+	}
+	while (!inputh.eof())
+	{
+		string str;
+		getline(inputh, str);
+		linenum++;
+		if (linenum == 1) {//第一行是否是整数
+			if (NisNum(str)) {
+				Nnum = atoi(str.c_str());
+				continue;
+			}
+			else {
+				cout << "Make sure the first line is an Integer that greater than or equal to 1." << endl;
+				exit(0);
+			}
+		}
+		else {
+			if (str.size() == 0) {//处理最后一行的换行
+				linenum--;
+				continue;
+			}
+			if (str.size() < 9) {
+				//输入数据过短
+				cout << "TOO SHORT!Please input as \"L\\S\\R int_x1 int_y1 int_x2 int_y2\" for each line.at line" << linenum << endl;
+				exit(0);
+			}
+			//输入的类型不是L S R
+			if (str.at(0) != 'L' && str.at(0) != 'R' && str.at(0) != 'S') {
+				cout << "Please input line type as \"L\",\"S\",\"R\" at line"<<linenum << endl;
+				exit(0);
+			}
+			if (!isspace(str.at(1))) {
+				//L\S\R 和数字之间没有空格
+				cout << "Make sure there is a SPACE between number and letter at line" << linenum << endl;
+				exit(0);
+			}
+			vector<string> strs;
+			stringstream temp(str); //str以空格分割
+			string res;
+			//依次输出到res中，并存入strs中 
+			while (temp >> res)
+				strs.push_back(res);
+			//输出res 
+			//cout << "size is" << strs.size() << endl;L 0 0 1 1 SIZE=5
+			if (strs.size() > 5) {
+				//输入元素过多
+				cout << "TOO LONG!Please input as \"L\\S\\R int_x1 int_y1 int_x2 int_y2\" for each line.Error at line" << linenum << endl;
+				exit(0);
+			}
+			if (strs.size() < 5) {
+				//输入元素过少
+				cout << "TOO SHORT!Please input as \"L\\S\\R int_x1 int_y1 int_x2 int_y2\" for each line.Error at line" << linenum << endl;
+				exit(0);
+			}
+			for (int i = 1; i < strs.size(); i++) {
+				//分割 正确为四个数字
+				//cout << strs[i] <<endl;
+				//数字判断
+				handleNum(strs[i]);
+			}
+			int x1 = atoi(strs[1].c_str());
+			int y1 = atoi(strs[2].c_str());
+			int x2 = atoi(strs[3].c_str());
+			int y2 = atoi(strs[4].c_str());
+			if (x1 == x2 && y1 == y2) {
+				cout << "Please input two different points.Error at line" << linenum << endl;
+				exit(0);
+			}
+			Point pt1, pt2;
+			pt1.Xpoint = x1;
+			pt1.Ypoint = y1;
+			pt2.Xpoint = x2;
+			pt2.Ypoint = y2;
+			//pt1 pt2 type
+			WFLine l1 = l1.getLine(pt1, pt2,strs[0].at(0));
+			wflines.push_back(l1);
+		}	
+	}
+	if ((linenum-1) != Nnum) {//所有行数-1 = N
+		cout << "N does not match the number of lines."<< endl;
+		exit(0);
+	}
+
+	InfinitePoints();
+
+	inputh.close();
+}
+
+bool NisNum(string str) {
+	if (str.at(0) == '0' && str.size()>1) {//出现以0开始的数字
+		cout<< "A number that begins with 0 at line"<<linenum<<endl;
+		exit(0);
+	}
+	for (int i = 0; i < str.size(); i++) {//N不是数字
+		if (str.at(i) > '9' || str.at(i) < '0')
+			return false;
+	}
+	if (atoi(str.c_str()) < 1) {//N<1
+		cout << "Make sure N is an integer greater than or equal to 1"<< endl;
+		exit(0);
+	}
+	return true;
+}
+
+void handleNum(string str) {
+	if (str.at(0) == '0' && str.size() > 1) {//出现以0开始的数字
+		cout << "A number that begins with 0 at line" << linenum << endl;
+		exit(0);
+	}
+	int minus = 0;//负号只能有一开始的哪一个
+	for (int i = 0; i < str.size(); i++) {
+		if (str.at(i) == '-' && minus==0) {//负数
+			minus++;
+			if (str.size() > 1) {
+				continue;
+			}
+			else if (str.size() == 1) {//只有一个负号
+				cout << "Make sure ‘-’ is followed by number.Error at line" << linenum << endl;
+				exit(0);
+			}
+		} 
+		if (str.at(i) > '9' || str.at(i) < '0') {//不是整数
+			cout << "Please input integers.Error at line" << linenum << endl;
+			exit(0);
+		}
+	}
+	if (atoi(str.c_str()) > 100000 || atoi(str.c_str()) < -100000) {//坐标范围超限
+		cout << "Make sure that the range of points is(-100000,100000).Error at line" << linenum << endl;
+		exit(0);
+	}
+}
+
+WFLine WFLine::getLine(Point pt1, Point pt2,char type) {
+	WFLine result;
+	/*
+	a = y1-y2
+	b = x2-x1
+	c = x1*y2-x2*y1
+	l = ax+by+c=0
+	*/
+	result.a = pt1.Ypoint - pt2.Ypoint;
+	result.b = pt2.Xpoint - pt1.Xpoint;
+	result.c = pt1.Xpoint * pt2.Ypoint - pt2.Xpoint * pt1.Ypoint;
+	result.type = type;
+	result.p1 = pt1;
+	result.p2 = pt2;
+	return result;
+}
+
+void InfinitePoints() {
+	int i, j;
+	int Num = linenum - 1;//直线条数
+	for (i = 0; i < Num; i++) {
+		for (j = i + 1; j < Num; j++) {
+			if (wflines[i].b != 0 && wflines[j].b != 0) {//斜率都存在
+				double k1 = wflines[i].a / wflines[i].b;
+				double b1 = wflines[i].c / wflines[i].b;
+				double k2 = wflines[j].a / wflines[j].b;
+				double b2 = wflines[j].c / wflines[j].b;
+				if (k1 == k2 && b1 == b2) {
+					if (wflines[i].type == 'L' || wflines[j].type == 'L') {
+						//i j中有一条直线那么一定不止一个交点
+						cout << "Infinitely intersections between line L " << i << " and " << j << endl;
+						exit(0);
+					}//都是 LL end
+					else {
+						double x1 = wflines[i].p1.Xpoint;
+						double x2 = wflines[i].p2.Xpoint;
+						double x3 = wflines[j].p1.Xpoint;
+						double x4 = wflines[j].p2.Xpoint;
+						//max(A.start,B.start)<min(A.end,B,end)，即可判断A，B重叠
+						double Astart, Aend, Bstart, Bend;
+						if (x1 < x2) {
+							Astart = x1;
+							Aend = x2;
+						}
+						else {
+							Astart = x2;
+							Aend = x1;
+						}
+						if (x3 < x4) {
+							Bstart = x3;
+							Bend = x4;
+						}
+						else {
+							Bstart = x4;
+							Bend = x3;
+						}
+						if (wflines[i].type == 'S' && wflines[j].type == 'S') {
+							double max, min;
+							if (Astart > Bstart) {
+								max = Astart;
+							}
+							else {
+								max = Bstart;
+							}
+							if (Aend < Bend) {
+								min = Aend;
+							}
+							else {
+								min = Bend;
+							}
+							if (max < min) {
+								cout << "Infinitely intersections between line SS " << i << " and " << j << endl;
+								exit(0);
+							}
+						}//SS
+						else if (wflines[i].type == 'S' && wflines[j].type == 'R') {
+							//射线向右延伸
+							if (wflines[j].p1.Xpoint < wflines[j].p2.Xpoint) {
+								if (wflines[j].p1.Xpoint < Aend) {
+									cout << "Infinitely intersections between line SR " << i << " and " << j << endl;
+									exit(0);
+								}
+							}
+							else {//射线向左延伸
+								if (wflines[j].p1.Xpoint > Astart) {
+									cout << "Infinitely intersections between line SR " << i << " and " << j << endl;
+									exit(0);
+								}
+							}
+						}//SR
+						else if (wflines[i].type == 'R' && wflines[j].type == 'S') {
+							//射线向右延伸
+							if (wflines[i].p1.Xpoint < wflines[i].p2.Xpoint) {
+								if (wflines[i].p1.Xpoint < Bend) {
+									cout << "Infinitely intersections between line RS " << i << " and " << j << endl;
+									exit(0);
+								}
+							}
+							else {//向左延伸
+								if (wflines[i].p1.Xpoint > Bstart) {
+									cout << "Infinitely intersections between line RS " << i << " and " << j << endl;
+									exit(0);
+								}
+							}
+						}//RS
+						else if (wflines[i].type == 'R' && wflines[j].type == 'R') {
+							int line_i_right = 0;
+							int line_j_right = 0;
+							if (wflines[i].p1.Xpoint < wflines[i].p2.Xpoint) {
+								line_i_right = 1;//i向右
+							}
+							if (wflines[j].p1.Xpoint < wflines[j].p2.Xpoint) {
+								line_j_right = 1;//j向右
+							}
+							if ((line_i_right && line_j_right) || ((line_i_right==0) && (line_j_right==0))) {
+								cout << "Infinitely intersections between line RR " << i << " and " << j << endl;
+								exit(0);
+							}
+							else if (line_i_right && (line_j_right == 0)) {//i向右 j向左
+								if (wflines[i].p1.Xpoint < wflines[j].p1.Xpoint) {
+									cout << "Infinitely intersections between line RR " << i << " and " << j << endl;
+									exit(0);
+								}
+							}
+							else if ((line_i_right == 0) && line_j_right) {//i向左 j向右
+								if (wflines[j].p1.Xpoint < wflines[i].p1.Xpoint) {
+									cout << "Infinitely intersections between line RR " << i << " and " << j << endl;
+									exit(0);
+								}
+							}
+						}//RR
+					}//除去LL情况
+				}//end kb相等
+			}//end 斜率存在
+			else if(wflines[i].b==0 && wflines[j].b==0){//斜率都不存在
+				if (wflines[i].p1.Xpoint == wflines[j].p1.Xpoint) {//且X相同
+					if (wflines[i].type == 'L' || wflines[j].type == 'L') {
+						cout << "Infinitely intersections between line L " << i << " and " << j << endl;
+						exit(0);
+					}
+					else {
+						double Amax, Amin, Bmax, Bmin;
+						double y1 = wflines[i].p1.Ypoint;
+						double y2 = wflines[i].p2.Ypoint;
+						double y3 = wflines[j].p1.Ypoint;
+						double y4 = wflines[j].p2.Ypoint;
+						if (y1 > y2) {
+							Amax = y1;
+							Amin = y2;
+						}
+						else {
+							Amax = y2;
+							Amin = y1;
+						}
+						if (y3 > y4) {
+							Bmax = y3;
+							Bmin = y4;
+						}
+						else {
+							Bmax = y4;
+							Bmin = y3;
+						}
+						if (wflines[i].type == 'S' && wflines[j].type == 'S') {
+							double min, max;
+							if (Amax < Bmax) {
+								max = Amax;
+							}
+							else {
+								max = Bmax;
+							}
+							if (Amin > Bmin) {
+								min = Amin;
+							}
+							else {
+								min = Bmin;
+							}
+							if (max > min) {
+								cout << "Infinitely intersections between line SS " << i << " and " << j << endl;
+								exit(0);
+							}
+						}
+						else if (wflines[i].type == 'S' && wflines[j].type == 'R') {
+							if (wflines[j].p1.Ypoint > wflines[j].p2.Ypoint) {//直线向下延申
+								if (wflines[j].p1.Ypoint > Amin) {
+									cout << "Infinitely intersections between line SR " << i << " and " << j << endl;
+									exit(0);
+								}
+							}
+							else {
+								if (wflines[j].p1.Ypoint < Amax) {
+									cout << "Infinitely intersections between line SR " << i << " and " << j << endl;
+									exit(0);
+								}
+							}
+						}//SR
+						else if (wflines[i].type == 'R' && wflines[j].type == 'S') {
+							if (wflines[i].p1.Ypoint > wflines[i].p2.Ypoint) {
+								if (wflines[i].p1.Ypoint > Bmin) {
+									cout << "Infinitely intersections between line RS " << i << " and " << j << endl;
+									exit(0);
+								}
+							}
+							else {
+								if (wflines[i].p1.Ypoint < Bmax) {
+									cout << "Infinitely intersections between line RS " << i << " and " << j << endl;
+									exit(0);
+								}
+							}
+						}//RS
+						else if (wflines[i].type == 'R' && wflines[j].type == 'R') {
+							int line_i_down = 0;
+							int line_j_down = 0;
+							if (y1 > y2) {
+								line_i_down = 1;
+							}
+							if (y3 > y4) {
+								line_j_down = 1;
+							}
+							if ((line_i_down && line_j_down) || ((line_i_down == 0) && (line_j_down == 0))) {
+								cout << "Infinitely intersections between line RR " << i << " and " << j << endl;
+								exit(0);
+							}
+							else if (line_i_down && (line_j_down == 0)) {
+								if (y1 > y3) {
+									cout << "Infinitely intersections between line RR " << i << " and " << j << endl;
+									exit(0);
+								}
+							}
+							else if ((line_i_down == 0) && line_j_down) {
+								if (y3 > y1) {
+									cout << "Infinitely intersections between line RR " << i << " and " << j << endl;
+									exit(0);
+								}
+							}
+						}//RR
+					}
+				}//X相同
+			}//斜率都不存在
+		}//end for
+	}
 }

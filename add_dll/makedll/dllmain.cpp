@@ -1,19 +1,19 @@
 ﻿#include "pch.h"
 
-BOOL APIENTRY DllMain( HMODULE hModule,
-                       DWORD  ul_reason_for_call,
-                       LPVOID lpReserved
-                     )
+BOOL APIENTRY DllMain(HMODULE hModule,
+	DWORD  ul_reason_for_call,
+	LPVOID lpReserved
+)
 {
-    switch (ul_reason_for_call)
-    {
-    case DLL_PROCESS_ATTACH:
-    case DLL_THREAD_ATTACH:
-    case DLL_THREAD_DETACH:
-    case DLL_PROCESS_DETACH:
-        break;
-    }
-    return TRUE;
+	switch (ul_reason_for_call)
+	{
+	case DLL_PROCESS_ATTACH:
+	case DLL_THREAD_ATTACH:
+	case DLL_THREAD_DETACH:
+	case DLL_PROCESS_DETACH:
+		break;
+	}
+	return TRUE;
 }
 
 vector < line > coor_4_line; //每条线的坐标
@@ -116,8 +116,8 @@ void calcu_coor(int i, int j)
 	}
 	if (JudgeType(i, j, x, y))
 	{
-		string coor = to_string(x) + to_string(y); //shit
-		intersection.insert(pair<string, int>(coor, 0));
+		//string coor = to_string(x) + to_string(y); //shit
+		//intersection.insert(pair<string, int>(coor, 0));
 		Point px;
 		px.Xpoint = x;
 		px.Ypoint = y;
@@ -239,8 +239,8 @@ void Dealwith(line l1, line l2) {
 		}
 	}
 	if (flag == 1) {
-		string coor = to_string(x) + to_string(y); //shit
-		intersection.insert(pair<string, int>(coor, 0));
+		//string coor = to_string(x) + to_string(y); //shit
+		//intersection.insert(pair<string, int>(coor, 0));
 		Point px;
 		px.Xpoint = x;
 		px.Ypoint = y;
@@ -291,8 +291,8 @@ void DealwithKexist(line l1, line l2) {
 		}
 	}
 	if (flag == 1) {
-		string coor = to_string(x) + to_string(y); //shit
-		intersection.insert(pair<string, int>(coor, 0));
+		//string coor = to_string(x) + to_string(y); //shit
+		//intersection.insert(pair<string, int>(coor, 0));
 		Point px;
 		px.Xpoint = x;
 		px.Ypoint = y;
@@ -408,7 +408,7 @@ void delLine(line l) {
 	}
 	vector<WFLine>::iterator it2;
 	for (it2 = wflines.begin(); it2 != wflines.end();) {
-		if (it2->p1.Xpoint == l.x1 && it2->p2.Xpoint == l.x2 && it2->p1.Ypoint == l.y1 && it2->p2.Ypoint == l.y2 
+		if (it2->p1.Xpoint == l.x1 && it2->p2.Xpoint == l.x2 && it2->p1.Ypoint == l.y1 && it2->p2.Ypoint == l.y2
 			&& it2->type == l.type.at(0))
 			it2 = wflines.erase(it2);    //删除元素，返回值指向已删除元素的下一个位置    
 		else
@@ -422,7 +422,7 @@ void solve() {
 	intersection.clear();
 	points.clear();
 	cnt_coor_num();
-	p_cnt = intersection.size();
+	p_cnt = points.size();//!!
 }
 
 int getInterNum() {
@@ -470,7 +470,7 @@ string inputHandler(string FileName) {
 		return result;
 		//cout << "File is Not Found." << endl;
 		//exit(0);
-		
+
 	}
 	while (!inputh.eof())
 	{
@@ -486,7 +486,7 @@ string inputHandler(string FileName) {
 			else {
 				Nnum = atoi(str.c_str());
 				continue;
-			}			
+			}
 		}
 		else {
 			if (str.size() == 0) {//处理最后一行的换行
@@ -495,7 +495,7 @@ string inputHandler(string FileName) {
 			}
 			if (str.size() < 9) {
 				//输入数据过短
-				result = "TOO SHORT!Please input as \"L\\S\\R int_x1 int_y1 int_x2 int_y2\" for each line.at line"+to_string(linenum);
+				result = "TOO SHORT!Please input as \"L\\S\\R int_x1 int_y1 int_x2 int_y2\" for each line.at line" + to_string(linenum);
 				return result;
 				//cout << "TOO SHORT!Please input as \"L\\S\\R int_x1 int_y1 int_x2 int_y2\" for each line.at line" << linenum << endl;
 				//exit(0);
@@ -576,7 +576,7 @@ string inputHandler(string FileName) {
 	//InfinitePoints();
 	inputh.close();
 	return result;
-	
+
 }
 
 string  NisNum(string str) {
