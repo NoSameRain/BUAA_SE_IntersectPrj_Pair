@@ -2,6 +2,18 @@ BUAA_SE_IntersectPrj_Pair
 
 BUAA软工结对项目
 
+
+
+3.24 使用说明
+
+UI文件夹下包含了
+
+（1）bin_UI文件夹：包含UI的exe文件（点击即可使用界面）以及必要的dll文件
+
+（2）src_UI文件夹：内含用于实现UI模块的源代码和头文件
+
+
+
 3.19 封装成dll，lib文件
 
 使用方法：
