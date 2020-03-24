@@ -65,61 +65,53 @@ DLL_API void write(string FileName);
 
 “坐标范围超限”，“直线定义中两点重合”或“有无穷多交点”
 
-| 错误类型               | 输出                                                         | 测试样例                                                     |
-| ---------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| **类型不符合L S R**    | Please input line type as \"L\",\"S\",\"R\" at line          | 2<br>K 1 2 4 5<br>a 0 0 1 1                                  |
-| **‘-’后未紧跟数字**    | Make sure ‘-’ is followed by number.Error at line            | 3
-
-L 0 0 1 1
-R 3 2 0 5
-S 9 - 7 8                            |
-| **坐标范围超限**       | Make sure that the range of points is(-100000,100000).Error at line | 2
-L 1000001 4 5 1
-R 3 2 0 5<br/>2<br>L 1 4 5 1
-R 3 2 0 -18236862 |
-| **line中两点重合**     | Please input two different points.Error at line              | 3
-<br/>L 1 4 5 1
-R 3 2 0 3
-S 7 8 7 8                            |
-| **有无穷多交点**       | Infinitely many intersections                                |                                                              |
-| **输入数据不完整**     | TOO SHORT!Please input as \"L\\S\\R int_x1 int_y1 int_x2 int_y2\" for each line.at line | 4
-<br/>L 1 4 5 1
-R 3 2 0 3
-L 6 4 3 2
-S 9 7 5                     |
-| **输入过多元素**       | TOO LONG!Please input as \"L\\S\\R int_x1 int_y1 int_x2 int_y2\" for each line.Error at line | 3
-<br/>L 0 0 1 1
-R 3 2 0 5
-S 9 5 6 7 8                          |
-| **输入非整数**         | Please input integers.Error at line                          | 3
-<br/>L 0 0 1 1
-R 3 2 0 5
-S 9 5 6 7
-R 4.45 6 7 6                |
-|                        |                                                              | 3
-<br/>L 0 0 1 1
-R 3 2 0 5
-S 9 5 6 7
-R 4 ask 7 6                 |
-| **找不到输入文件**     | File is Not Found                                            | input.txt移除                                                |
-| **第一行不是整数**     | Make sure the first line is an Integer that greater than or equal to 1. | a
-<br/>L 0 0 1 1
-R 3 2 0 5                                     |
-| **第一行小于1**        | Make sure N is an integer greater than or equal to 1         | 0
-<br/>L 0 0 1 1
-R 3 2 0 5                                     |
-| **type和数字没有空格** | Make sure there is a SPACE between number and letter at line | 2
-<br/>L0 0 1 1 3
-R 3 2 0 5                                    |
-| **N和直线数目不匹配**  | N does not match the number of lines.                        | 2
-<br/>L 0 1 1 3
-R 3 2 0 5
-R 0 0 1 1                            |
-| **出现以0开始的数字**  | A number that begins with 0 at line                          | 4
-<br/>L 0 1 1 3
-R 3 2 0 5
-R 0 0 1 1
-S 012 3 4 5                 |
+| 错误类型                               | 输出                                                         | 测试样例                                                     |
+| -------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| **类型不符合L S R**                    | Please input line type as \"L\",\"S\",\"R\" at line          | 2<br/>K 1 2 4 5
+a 0 0 1 1                                     |
+| **‘-’后未紧跟数字**                    | Make sure ‘-’ is followed by number.Error at line            | 3<br>L 0 0 1 1<br>R 3 2 0 5<br>S 9 - 7 8                     |
+| **坐标范围超限**                       | Make sure that the range of points is(-100000,100000).Error at line | 2<br>L 1000001 4 5 1<br>
+R 3 2 0 5                            |
+| **line中两点重合**                     | Please input two different points.Error at line              | 3<br>
+L 1 4 5 1<br>
+R 3 2 0 3<br>
+S 7 8 7 8                     |
+| **输入数据不完整**                     | TOO SHORT!Please input as \"L\\S\\R int_x1 int_y1 int_x2 int_y2\" for each line.at line | 4<br>
+L 1 4 5 1<br>
+R 3 2 0 3<br>
+L 6 4 3 2<br>
+S 9 7 5          |
+| **输入过多元素**                       | TOO LONG!Please input as \"L\\S\\R int_x1 int_y1 int_x2 int_y2\" for each line.Error at line | 3<br/>
+L 0 0 1 1<br>
+R 3 2 0 5<br>
+S 9 5 6 7 8                  |
+| **输入非整数**                         | Please input integers.Error at line                          | 3<br>
+L 0 0 1 1<br>
+R 3 2 0 5<br>
+S 9 5 6 7<br>
+R 4.45 6 7 6     |
+| **找不到输入文件**                     | File is Not Found                                            | input.txt移除                                                |
+| **第一行不是整数**                     | Make sure the first line is an Integer that greater than or equal to 1. | a<br>
+L 0 0 1 1<br>
+R 3 2 0 5                                  |
+| **第一行小于1**                        | Make sure N is an integer greater than or equal to 1.        | 0<br>
+L 0 0 1 1<br>
+R 3 2 0 5                                  |
+| **type和数字没有空格**                 | Make sure there is a SPACE between number and letter at line | 2<br>
+L0 0 1 1 3<br>
+R 3 2 0 5                                 |
+| **N和直线数目不匹配**                  | N does not match the number of lines.                        | 2<br/>
+L 0 1 1 3<br>
+R 3 2 0 5<br>
+R 0 0 1 1                    |
+| **出现以0开始的数字**                  | A number that begins with 0 at line                          | 4<br>
+L 0 1 1 3<br>
+R 3 2 0 5<br>
+R 0 0 1 1<br>
+S 012 3 4 5      |
+| **不止一个交点，即L\S\R 出现重合情况** | Infinitely intersections between line type-xx                | 2<br>
+L 1 0 2 1<br>
+L 0 -1 -1 -2<br>这一类的错误情况比较多，涉及到三种线两两组合以及斜率是否存在的问题，更多的测试数据可以在github地址的readme.md中看到。 |
 
 不止一个交点，即L\S\R 出现重合情况
 
